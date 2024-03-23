@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <string>
 using namespace std;
 
@@ -6,27 +6,22 @@ int result_cpp(int a, int c, int d) {
 	return ((2 * c - d / 3) / (1 - a / 4));
 }
 
-int check_input() { //проверка введенных значений для длины массива
+int check_input(string num) { //проверка введенных значений для длины массива
 	//блок try catch исользуется для поиска ошибки, например, в нашем случае это недопустимого размера ввод длины
 	try {
-		cout << "Введите число: ";
+		cout << "Введите значение " << num << " : ";
 		string length0 = " "; //вводим строковую переменную
 		cin >> length0;
+		size_t pos = length0.find("-");
 		while (length0.find_first_not_of("1234567890-") != -1) { //если введенное значение содержит что-то кроме цифр, то выдается ошибка
 			std::cout << "ОШИБКА! Введите целое число: ";
-			return check_input(); //повторный ввод
+			return check_input(num); //повторный ввод
 		}
-		if (stoi(length0) == 0 || stoll(length0) == 9223373036854775807)
-		{
-			cout << "Введите целое число больше 0: ";
-			return check_input(); //повторный ввод
-		}
-		else
-			return stoi(length0);
+		return stoi(length0);
 	}
 	catch (...) {
 		cout << "Значение больше допустимого значения типа. Пожалуйста, введите число поменьше " << endl;
-		return check_input();
+		return check_input(num);
 	}
 }
 
@@ -35,18 +30,16 @@ int main()
 {
 	setlocale(LC_ALL, "Russian");
 	int a, c, d;
-	a = check_input();
-	c = check_input();
-	d = check_input();
+	a = check_input("a");
+	c = check_input("c");
+	d = check_input("d");
 
 	int result=0;
 	int res;
 	int flag=-1;
 
 	__asm {
-
 		mov eax, a; eax = a
-		jo error_of; ошибка переполнения
 		mov ebx, 4;
 		cdq; eax = eax:edx
 		idiv ebx; <eax> = a / 4
@@ -62,7 +55,6 @@ int main()
 		jo error_of; ошибка переполнения
 		mov res, eax; res = 2 * c
 		mov eax, d;
-		jo error_of; ошибка переполнения
 		mov ebx, 3;
 		cdq
 		idiv ebx; eax = d / 3
