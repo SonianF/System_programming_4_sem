@@ -81,9 +81,9 @@ int main()
 		jmp finish; переход на конец программы
 	l_smaller :
 		mov eax, a; eax = a
-		jo error_of; ошибка переполнения
 		mov ecx, 5; ecx = 5
 		imul ecx; eax = 5 * a
+		jo error_of; ошибка переполнения
 		sub eax, ebx; eax = 5 * a - b
 		cdq; подготовка деления <edx:eax> = (5 * a - b); обработка ситуации «частное велико»
 		idiv ebx; eax = (5 * a - b) * b
