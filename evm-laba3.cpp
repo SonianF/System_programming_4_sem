@@ -4,7 +4,7 @@ using namespace std;
 
 
 void showTask() {
-	cout << "Вариант 14" << endl;
+	cout << "Вариант 8" << endl;
 	cout << "a > b: (2b - 2a) / (a + 7)" << endl;
 	cout << "a = b: -89" << endl;
 	cout << "a < b: (-b + 5a) / b" << endl;
@@ -12,10 +12,10 @@ void showTask() {
 
 int result_cpp(int a, int b) {
 	if (a > b) {
-		return (2*b - 2*a) / (a + 7);
+		return (2 * b - 2 * a) / (a + 7);
 	}
 	else if (a < b) {
-		return (-b + 5*a) / b;
+		return (-b + 5 * a) / b;
 	}
 	else
 		return -89;
@@ -57,39 +57,43 @@ int main()
 		mov eax, a; eax = a
 		mov ebx, b;
 		cmp eax, ebx; сравнение a и b
-		jg l_bigger; переход если a > b
-		jl l_smaller; переход если a < b
-		je equally; переход если a = b
+			jg l_bigger; переход если a > b
+			jl l_smaller; переход если a < b
+			je equally; переход если a = b
 
-	equally:
+			equally :
 		mov result, -89; result = -89
-		mov flag, 2
-		jmp finish; переход на конец программы
+			mov flag, 2
+			jmp finish; переход на конец программы
 
-	l_bigger :
+			l_bigger :
 		sub ebx, eax; ebx = b - a
-		mov ecx, 7; ecx = 7
-		add ecx, eax; ecx = a + 7
-		jz error_zf; ошибка деление на ноль
-		mov eax, ebx; eax = b - a
-		mov ebx, 2; ebx = 2
-		imul ebx; eax = (b - a) * 2
-		cdq; подготовка деления <edx:eax> = (b - a) * 2; обработка ситуации «частное велико»
-		idiv ecx; eax = 2 * (b - a) / (a + 7)
-		mov result, eax; result = 2 * (b - a) / (a + 7)
-		mov flag, 2
-		jmp finish; переход на конец программы
-	l_smaller :
+			mov ecx, 7; ecx = 7
+			add ecx, eax; ecx = a + 7
+			jz error_zf; ошибка деление на ноль
+			mov eax, ebx; eax = b - a
+			mov ebx, 2; ebx = 2
+			imul ebx; eax = (b - a) * 2
+			cdq; подготовка деления <edx:eax> = (b - a) * 2; обработка ситуации «частное велико»
+			idiv ecx; eax = 2 * (b - a) / (a + 7)
+			mov result, eax; result = 2 * (b - a) / (a + 7)
+			mov flag, 2
+			jmp finish; переход на конец программы
+			l_smaller :
 		mov eax, a; eax = a
-		mov ecx, 5; ecx = 5
-		imul ecx; eax = 5 * a
-		jo error_of; ошибка переполнения
-		sub eax, ebx; eax = 5 * a - b
-		cdq; подготовка деления <edx:eax> = (5 * a - b); обработка ситуации «частное велико»
-		idiv ebx; eax = (5 * a - b) * b
-		mov result, eax; result = (5 * a - b) / b
-		mov flag, 2
-		jmp finish; переход на конец программы
+			mov ebx, b; ebx = b
+			mov ecx, 0; ecx = 0
+			cmp ebx, ecx; сравниваем не равно ли 0 b
+			je error_zf; если b=0, то переходим на ошибку
+			mov ecx, 5; ecx = 5
+			imul ecx; eax = 5 * a
+			jo error_of; ошибка переполнения
+			sub eax, ebx; eax = 5 * a - b
+			cdq; подготовка деления <edx:eax> = (5 * a - b); обработка ситуации «частное велико»
+			idiv ebx; eax = (5 * a - b) / b
+			mov result, eax; result = (5 * a - b) / b
+			mov flag, 2
+			jmp finish; переход на конец программы
 
 			error_zf :
 		mov flag, 0
